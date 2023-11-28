@@ -80,21 +80,31 @@ router.post('/custom/all', function(req, res, next) {
  * They also take a value in the body, this value is different for each route (boolean, integer, string/hex color, hex instruction)
  */
 
-router.post('/power/', function(req, res, next) {
-    if(req.body.value == undefined || req.body.devices == undefined) return res.status(400).send("No value specified");
+router.post('/power/', async function(req, res, next) {
+    if (req.body.value == undefined || req.body.devices == undefined) {
+        return res.status(400).send("No value specified");
+    }
+
     let value = req.body.value;
     let devices = req.body.devices;
 
-    if(typeof value != "boolean") return res.status(400).send("Value must be a boolean");
-    if(typeof devices != "object") return res.status(400).send("Devices must be an array");
-
-    let resp = [];
-    for(let i = 0; i < devices.length; i++) {
-        let device = config.devices.find(device => device.id == devices[i]);
-        if(device) resp.push(device.setPower(value));
+    if (typeof value !== "boolean") {
+        return res.status(400).send("Value must be a boolean");
     }
+
+    if (!Array.isArray(devices)) {
+        return res.status(400).send("Devices must be an array");
+    }
+
+    let resp = await Promise.all(devices.map(async (deviceId) => {
+        let device = config.devices.find(device => device.id == deviceId);
+        if (device) {
+            return { status: await device.setPower(value) };
+        }
+    }));
+
     res.send(resp);
-})
+});
 
 router.post('/brightness/', function(req, res, next) {
     if(req.body.value == undefined || req.body.devices == undefined) return res.status(400).send("No value specified");
