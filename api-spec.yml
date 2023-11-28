@@ -1,0 +1,197 @@
+openapi: 3.0.3
+info:
+  title: ELK-BLEDOM-RECODE
+  description: This is the OpenAPI Specification of ELK-BLEDOM-RECODE.
+  version: 1.0.0
+paths:
+  /led/power/all:
+    post:
+      tags:
+        - LED Strip - Power
+      summary: Change power state of all LED Strips
+      description: Change power state of all LED Strips
+      operationId: changePowerAll
+      requestBody:
+        description: Updates the power status of all 
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/LEDPowerAll'
+        required: true
+      responses:
+        '200':
+          description: Successful operation        
+        '500':
+          description: Invalid input
+
+  /led/power/:
+    post:
+      tags:
+        - LED Strip - Power
+      summary: Change power state of multiple/single LED Strips
+      description: Change power state of multiple/single LED Strips
+      requestBody:
+        description: Updates the power status of multiple/single led strips
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/LEDPowerMultiple'
+        required: true
+      responses:
+        '200':
+          description: Successful operation        
+        '500':
+          description: Invalid input
+
+  /led/brightness/all:
+    post:
+      tags:
+        - LED Strip - Brightness
+      summary: Change brightness of all LED Strips
+      description: Change brightness of all LED Strips (Use a number between 1 and 100)
+      requestBody:
+        description: Updates the brightness of all led strips
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/LEDBrightnessAll'
+        required: true
+      responses:
+        '200':
+          description: Successful operation        
+        '500':
+          description: Invalid input
+
+  /led/brightness/:
+    post:
+      tags:
+        - LED Strip - Brightness
+      summary: Change brightness of multiple/single LED Strips
+      description: Change brightness of multiple/single LED Strips
+      requestBody:
+        description: Updates the brightness of multiple/single led strips
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/LEDBrightnessMultiple'
+        required: true
+      responses:
+        '200':
+          description: Successful operation        
+        '500':
+          description: Invalid input
+ 
+
+
+  /led/color/all:
+    post:
+      tags:
+        - LED Strip - Color
+      summary: Change color of all LED Strips
+      description: Change color of all LED Strips
+      requestBody:
+        description: Updates the color of all led strips
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/LEDColorAll'
+        required: true
+      responses:
+        '200':
+          description: Successful operation        
+        '500':
+          description: Invalid input
+
+  /led/color/:
+    post:
+      tags:
+        - LED Strip - Color
+      summary: Change Color state of multiple/single LED Strips
+      description: Change Color state of multiple/single LED Strips
+      requestBody:
+        description: Updates the Color status of multiple/single led strips
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/LEDColorMultiple'
+        required: true
+      responses:
+        '200':
+          description: Successful operation        
+        '500':
+          description: Invalid input
+
+
+components:
+  schemas:
+    LEDPowerAll:
+      required:
+        - value
+      type: object
+      properties:
+        value:
+          type: boolean
+          example: true
+
+    LEDColorAll:
+      required:
+        - value
+      type: object
+      properties:
+        value:
+          type: string
+          example: '#FF0000'
+
+    LEDBrightnessAll:
+      required:
+        - value
+      type: object
+      properties:
+        value:
+          type: number
+          example: 100
+
+    LEDBrightnessMultiple:
+      required:
+        - value
+        - devices
+      type: object
+      properties:
+        value:
+          type: integer
+          example: 50
+        devices:
+          type: object
+          example: [
+            0, 1, 2
+          ]
+
+    LEDPowerMultiple:
+      required:
+        - value
+        - devices
+      type: object
+      properties:
+        value:
+          type: boolean
+          example: true
+        devices:
+          type: object
+          example: [
+            0, 1, 2
+          ]
+
+    LEDColorMultiple:
+      required:
+        - value
+        - devices
+      type: object
+      properties:
+        value:
+          type: string
+          example: '#FF0000'
+        devices:
+          type: object
+          example: [
+            0, 1, 2
+          ]
